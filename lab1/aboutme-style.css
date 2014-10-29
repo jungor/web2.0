@@ -1,0 +1,76 @@
+body {
+	background-color: gainsboro;
+	font-family: Comic Sans MS;
+	font-weight: 500;
+	font-size: 100%;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	font-family: Verdana;
+}
+a {
+	TEXT-DECORATION:none;
+	color: blue;
+	font-size: 0.875em;
+}
+
+ol {
+	list-style: none;
+	counter-reset: reverse 4;
+}
+
+dl {
+	padding-left: 1%;
+}
+
+li {
+	font-family: Verdana;
+	font-weight: 300;
+	font-size: 0.875em;
+}
+
+strong{
+	color: red;
+	font-style: italic;
+}
+
+div#wrapper {
+	background-color: transparent;
+}
+
+div#header {
+	background-color: gainsboro;
+	margin: 1%;
+	padding: 1%;
+	text-align: center;
+
+}
+
+div#study,div#movie,div#friend,div#mood {
+	background-color: Azure;
+	border-radius: 15px;
+	margin: 1%;
+	padding: 1%;
+}
+
+p:first-letter {
+	font-size: 1.5em;
+}
+
+a:hover {
+	TEXT-DECORATION:underline;
+}
+
+ol>li:before {
+	content: counter(reverse) '.';
+	display: block;
+	position: absolute;
+	left: -30px;
+	text-align: right;
+	width: 20px;
+}
+
+ol>li {
+	counter-increment: reverse -1;
+	position: relative;
+}

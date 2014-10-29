@@ -1,0 +1,87 @@
+body {
+	background-image: url(background.gif);
+	background-repeat: repeat-x repeat-y;
+}
+
+.w3c {
+	margin: 0px 10%;
+}
+
+.wrapper {
+	border: 10px #FFFFFF solid;
+	background-color: #FFFFFF;
+	margin: 0px 10%;
+	overflow: auto;
+
+}
+
+.header {
+	background-color: #A8F0F0;
+	clear: left;
+}
+
+.small_header {
+	text-align: right;
+	font-size: 14pt;
+	text-align: right;
+}
+
+.journal {
+	border: 4px #C2E9E9 solid;
+	background-color: #E8FBFB;
+	padding: 5px;
+	margin-top: 10px;
+	overflow: auto;
+}
+
+.friends {
+	border: 4px #1E90FF solid;
+	background-color: #A8F0F0;
+	margin-top: 20px;
+	margin-right: 10px;
+	width: auto;
+	height: auto;
+}
+
+.list {
+	width:120px;
+	height: 100px;
+}
+
+.time {
+	border-bottom: 2px #009097 dashed;
+}
+
+.first {
+	float: left;
+	width: 14%;
+	height: 100%;
+
+}
+
+.second {
+	float: left;
+	width: 86%;
+	height: 100%;
+}
+
+.header h1 {
+	text-align: right;
+}
+
+.header h2 {
+	text-align: right;
+	font-size: 14pt;
+}
+
+p.img {
+	float: right;
+}
+
+li {
+	color: #0000FF;
+}
+
+.journal>*:hover {
+	color: #FFFF00;
+}

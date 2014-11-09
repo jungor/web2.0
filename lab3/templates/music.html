@@ -1,0 +1,63 @@
+<!-- Created by Junjie Li, 2014-11-6
+Lasted modified by Junjie Li, 2014-11-9
+Email: 28715062@qq.com -->
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Music Viewer</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link href="http://www.cs.washington.edu/education/courses/cse190m/09sp/labs/3-music/viewer.css" type="text/css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div id="function">
+      <ul>
+        {% if shuffle == 'on'%}
+        <li style="display: inline; border: 1px solid blue"><a href="?playlist={{ playlist }}&shuffle=off&bysize={{ bysize }}">shuffle off</a></li>
+        {% else %}
+        <li style="display: inline; border: 1px solid blue"><a href="?playlist={{ playlist }}&shuffle=on&bysize={{ bysize }}">shuffle on</a></li>
+        {% end %}
+        
+        {% if bysize == 'on'%}
+        <li style="display: inline; border: 1px solid blue"><a href="?playlist={{ playlist }}&shuffle={{ shuffle }}&bysize=off">bysize off</a></li>
+        {% else %}
+        <li style="display: inline; border: 1px solid blue"><a href="?playlist={{ playlist }}&shuffle={{ shuffle }}&bysize=on">bysize on</a></li>
+        {% end %}
+        {% if is_playlist%}
+        <li style="display: inline; border: 1px solid blue"><a href="/">back</a></li>
+        {% end %}
+      </ul>
+    </div>
+    <div id="header">
+      <h1>190M Music Playlist Viewer</h1>
+      <h2>Search Through Your Playlists and Music</h2>
+    </div>
+    
+    
+    <div id="listarea">
+      <ul id="musiclist">
+
+        {% for i in range(len(songs)) %}
+        <li class="mp3item">
+          <a href="{{ static_url('songs/'+songs[i]) }}">{{ songs[i] }}</a>
+          {% if sizes[i] > 1048575 %}
+          ({{ round(sizes[i]/1048576.0, 2) }} mb)
+          {% elif sizes[i] > 1023 %}
+          ({{ round(sizes[i]/1024.0, 2) }} kb)
+          {% else %}
+          ({{ sizes[i] }} b)
+          {% end %}
+        </li>
+        {% end %}
+
+        {% for i in range(len(playlists)) %}
+        <li class="playlistitem">
+          <a href="music.html?playlist={{ playlists[i] }}">{{ playlists[i] }}</a>
+        </li>
+        {% end %}
+      </ul>
+    </div>
+  </body>
+</html>

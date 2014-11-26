@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+      <title>Buy Your Way to a Better Education!</title>
+      <link href="{{ static_url("buyagrade.css") }}" type="text/css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="content">
+      <form action="/sucker" method="post">
+      <h1>Buy Your Way to a Better Education!</h1>
+
+      <p>
+          The rough economy, along with recent changes in Sun Yat-sen University policy, now allow us to offer grades for money.  That's right!  All you need to get a 4.0 in this course is cold, hard, cash.
+      </p>
+
+      <hr />
+
+      <h2>Give Us Your Money</h2>
+      <dl>
+          <dt>Name</dt>
+          <dd>
+              <input type="text" name="name" />
+          </dd>
+
+          <dt>Section</dt>
+          <dd>
+              <select name="section" id="section">
+                <option value="Ma">MA</option>
+                <option value="Mb">MB</option>
+                <option value="Mc">MC</option>
+                <option value="Md">MD</option>
+                <option value="Me">ME</option>
+                <option value="Mf">MF</option>
+                <option value="Mg">MG</option>
+                <option value="Mh">MH</option>
+              </select>
+          </dd>
+
+          <dt>Credit Card</dt>
+          <dd>
+              <input type="text" name="cardid" />
+              <br />
+              <label><input type="radio" name="cardtype" value="visa" />Visa</label>
+              <label><input type="radio" name="cardtype" value="masterCard" />MasterCard</label>
+          </dd>
+      </dl>
+
+      <div>
+          <input type="submit" value="I am a giant sucker." />
+      </div>
+      </form>
+    </div>
+  </body>
+</html>

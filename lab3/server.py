@@ -27,6 +27,8 @@ SONGS = [filename for filename in FILES if filename.find(".mp3") >= 0]
 PLAYLISTS = [filename for filename in FILES if filename.find(".m3u") >= 0]
 
 class MusicHandler(tornado.web.RequestHandler):
+    ''' A requesthandler
+    to / and /music.html'''
     def get(self):
         __is_playlist = False
         __playlist = self.get_argument('playlist', 'none')
@@ -51,10 +53,7 @@ class MusicHandler(tornado.web.RequestHandler):
         if __by_size == 'on':
             def mycmp(left, right):
                 '''My cmp
-
-                use to sort
-
-                '''
+                use to sort'''
                 return cmp(os.path.getsize(os.path.join(SONGSDIR, left)),
                            os.path.getsize(os.path.join(SONGSDIR, right)))
             __songs.sort(mycmp)

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <!-- CSE 190 M Homework 4 (NerdLuv) -->
+  <head>
+    <title>NerdLuv</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+    <link href="http://222.200.185.14//public/hw4/heart.gif" type="image/gif" rel="shortcut icon" />
+    <link href="{{ static_url("nerdluv.css") }}" type="text/css" rel="stylesheet" />
+  </head>
+
+  <body>
+    <div id="main">
+      <div id="bannerarea">
+        <img src="{{ static_url("nerdluv.png") }}" alt="banner logo" /> <br />
+        where meek geeks meet
+      </div>
+
+      <form action="\signup" id="signup" method="post">
+        <fieldset>
+          <legend>New User Signup:</legend>
+
+          <div>
+            <div class="inputitem"><strong>Name:</strong></div>
+            <label><input type="text" name="name" size=16 /></label>
+          </div>
+
+          <div>
+            <div class="inputitem"><strong>Gender:</strong></div>
+            <label><input type="radio" name="gender" value="M" />Male</label>
+            <label><input type="radio" name="gender" value="F" checked="checked"/>Female</label>
+          </div>
+
+          <div>
+            <div class="inputitem"><strong>Age:</strong></div>
+            <label><input type="text" name="age" size=5 maxlength=2 /></label>
+          </div>
+
+          <div>
+            <div class="inputitem"><strong>Personality type:</strong></div>
+            <label><input type="text" name="personality" size=5 maxlength=4 /></label>
+            (<a href="http://www.humanmetrics.com/cgi-win/JTypes2.asp">Don't know your type?</a>)
+          </div>
+
+          <div>
+            <div class="inputitem"><strong>Favorite OS:</strong></div>
+            <label>
+            <select name="system">
+              <option value="Windows" selsected="selected">Windows</option>
+              <option value="Mac OS X">Mac OS X</option>
+              <option value="Linux">Linux</option>
+              <option value="other">other</option>
+            </select>
+            </label>
+          </div>
+
+
+          <div id="seeking">
+            <div class="inputitem"><strong>Seeking:</strong></div>
+            <label><input type="checkbox" name="seeking[]" value="M" checked="checked">Male</label>
+            <label><input type="checkbox" name="seeking[]" value="F">Female</label>
+          </div>
+
+          <div>
+            <div class="inputitem"><strong>Between ages:</strong></div>
+            <input type="text" name="lowerbound" size=5 maxlength=2 />
+            <input type="text" name="upperbound" size=5 maxlength=2 /> and
+          </div>
+
+          <div>
+            <input type="submit" value="Sign Up" />
+          </div>
+
+        </fieldset>
+      </form>
+
+    <p>
+      Results and page (C) Copyright 2009 NerdLuv Inc.
+    </p>
+
+    <div id="w3c">
+      <a href="http://validator.w3.org/check/referer">
+        <img src="http://www.w3.org/Icons/valid-xhtml11" alt="Valid XHTML 1.1" /></a>
+      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+        <img src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS" /></a>
+    </div>
+  </body>
+</html>
+
+

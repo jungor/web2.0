@@ -20,7 +20,11 @@
         <div class="match">
           {% for single in matches %}
           <p class="name">
-            <img src="{{ static_url("images/"+single.name.replace(' ', '_')+".jpg") }}" alt="single.name" />
+            {% if single.photo in images %}
+            <img src="{{ static_url('images/'+single.photo) }}" alt="single.photo" />
+            {% else %}
+            <img src="{{ static_url('images/default_user.jpg') }}" alt="single.photo" />
+            {% end %}
             {{ single.name }}
           </p>
 
@@ -29,7 +33,12 @@
             <strong>age:</strong>     {{ single.age }}<br />
             <strong>type:</strong>    {{ single.personality }}<br />
             <strong>OS:</strong>      {{ single.system }}<br />
-            <strong>rating:</strong>  {{ signuper.rating(single) }}
+            <strong>rating:</strong>
+            {% if newuser %}
+            {{ single.rating(newuser) }}
+            {% else %}
+            {{ single.rating(olduser) }}
+            {% end %}
           </p>
           {% end %}
         </div>

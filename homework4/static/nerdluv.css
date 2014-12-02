@@ -65,8 +65,7 @@ div {
 
 /* your additional styles go here */
 fieldset {
-	width: 32em;
-	margin-left: 1em;
+	width: 30em;
 	background-color: #E0E0FF;
 	border: 2px outset grey;
 }

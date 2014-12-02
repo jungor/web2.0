@@ -12,7 +12,7 @@ import re
 
 class Person(object):
     """docstring for Person"""
-    def __init__(self, name, gender, age, personality, system, seeking, lowerbound, upperbound, photo=None):
+    def __init__(self, name, gender, age, personality, system, seeking, lowerbound, upperbound):
         super(Person, self).__init__()
         self.name = name
         self.gender = gender
@@ -22,6 +22,7 @@ class Person(object):
         self.seeking = seeking
         self.lowerbound = lowerbound
         self.upperbound = upperbound
+        self.photo = self.name.replace(' ', '_').lower()+'.jpg'
 
     @property
     def name(self):
@@ -118,6 +119,13 @@ class Person(object):
         finally:
             pass
 
+    @property
+    def photo(self):
+        return self._photo
+    @photo.setter
+    def photo(self, value):
+        self._photo = value
+
     def ismatch(self, you):
         if self.seeking.find(you.gender) >= 0 and you.seeking.find(self.gender) >= 0:
             return True
@@ -133,8 +141,5 @@ class Person(object):
             result += 2
         result += len(set(self.personality)&set(you.personality))
         return result
-
-if __name__ == '__main__':
-    pa = Person('a', 'M', '20', 'INTJ', 'other', 'F', '20', '20')
-    pb = Person('a', 'F', '20', 'INTJ', 'other', 'M', '20', '20')
-    print pa.ismatch(pb), pa.rating(pb)
+    def __str__(self):
+        return ','.join([self.name, self.gender, str(self.age), self.personality, self.system, self.seeking, str(self.lowerbound), str(self.upperbound)])

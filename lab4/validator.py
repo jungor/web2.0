@@ -4,7 +4,7 @@
 '''Form validator
 
 Created by Junjie Li, 2014-11-11
-Lasted modified by Junjie Li, 2014-11-20
+Lasted modified by Junjie Li, 2014-11-26
 Email: 28715062@qq.com
 
 '''
@@ -25,7 +25,7 @@ define("port", default=8888, help="run on the given port", type=int)
 
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
-        self.render("buyagrade.htm")
+        self.render("buyagrade.html")
 
 class SuckerHandler(tornado.web.RequestHandler):
     def post(self):
@@ -57,7 +57,11 @@ class SuckerHandler(tornado.web.RequestHandler):
             and kwargs['cardid'] and kwargs['cardtype']):
             sorrymessage = 'You did not fill out the form completely.'
             self.render('sorry.html', sorrymessage=sorrymessage)
-        elif not(match and _luhn(match.group())):
+        elif not(match and _luhn(match.group())\
+            and (kwargs['cardtype'] == 'visa'\
+            and kwargs['cardid'][0] == '4'\
+            or kwargs['cardtype'] == 'visa'\
+            and kwargs['mastercard'][0] == '5')):
             sorrymessage = 'You did not provide a valid card number'
             self.render('sorry.html', sorrymessage=sorrymessage)
         else:

@@ -4,7 +4,7 @@
 '''NerdLuv server
 
 Created by Junjie Li, 2014-11-12
-Lasted modified by Junjie Li, 2014-11-12
+Lasted modified by Junjie Li, 2014-12-1
 Email: 28715062@qq.com
 
 '''
@@ -30,6 +30,21 @@ class IndexHandler(tornado.web.RequestHandler):
 class SignupHandler(tornado.web.RequestHandler):
     ''' A requesthandler
     to /signup '''
+    def get(self):
+        oldusername = self.get_argument('name', None)
+        olduser = None
+        if oldusername:
+            with open(os.path.join(self.get_template_path(), 'singles.txt')) as data:
+                singles = [Person.Person(*(line.strip().split(','))) for line in data.readlines()]
+                for person in singles:
+                    if person.name == oldusername:
+                        olduser = person
+                matches = [single for single in singles if single.ismatch(olduser) and single.rating(olduser) >= 3  and single.name != oldusername]
+                images = os.listdir(os.path.join(os.path.dirname(__file__), "static", "images"))
+                self.render('results.html', newuser=None, olduser=olduser, matches=matches, images=images)
+        else:
+            self.render('sorry.html', message='You did not provide valid name.')
+
     def post(self):
         kwargs = {
             'name': self.get_argument('name', None),
@@ -41,18 +56,28 @@ class SignupHandler(tornado.web.RequestHandler):
             'lowerbound': self.get_argument('lowerbound', None),
             'upperbound': self.get_argument('upperbound', None)
         }
-        with open(os.path.join(self.get_template_path(), 'singles.txt')) as data:
-            singles = [Person.Person(*(line.strip().split(','))) for line in data.readlines()]
         try:
-            signuper = Person.Person(**kwargs)
+            newuser = Person.Person(**kwargs)
         except ValueError, e:
             self.render('sorry.html', message=str(e))
         else:
-            # print signuper
-            # for single in singles:
-            #     print single.__dict__
-            matches = [single for single in singles if single.ismatch(signuper) and single.rating(signuper) >= 3]
-            self.render('results.html', signuper=signuper, matches=matches)
+            with open(os.path.join(self.get_template_path(), 'singles.txt'), 'a+') as data:
+                singles = [Person.Person(*(line.strip().split(','))) for line in data.readlines()]
+                names = [person.name for person in singles]
+                if newuser.name in names:
+                    self.render('sorry.html', message='The name has already been used.')
+                else:
+                    matches = [single for single in singles if single.ismatch(newuser) and single.rating(newuser) >= 3 and single.name != newuser.name]
+                    data.writelines((str(newuser), '\n'))
+                    images_path = os.path.join(os.path.dirname(__file__), "static", "images")
+                    images = os.listdir(images_path)
+                    photo = self.request.files['photo']
+                    for meta in photo:
+                        filename = newuser.photo
+                        filepath = os.path.join(images_path, filename)
+                        with open(filepath,'wb') as up:
+                            up.write(meta['body'])
+                    self.render('results.html', newuser=newuser, olduser=None, matches=matches, images=images)
         finally:
             pass
 

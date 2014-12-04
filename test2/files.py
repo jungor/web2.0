@@ -15,13 +15,6 @@ USERS_PATH = os.path.join(os.path.dirname(__file__), 'users.txt')
 BLOG_PATH = os.path.join(os.path.dirname(__file__), 'blog.txt')
 COMMENTS_PATH = os.path.join(os.path.dirname(__file__), 'comments.txt')
 
-# class User(object):
-#     """docstring for User"""
-#     def __init__(self, name, psw):
-#         super(User, self).__init__()
-#         self.name = name
-#         self.psw = psw
-
 def getUsers():
     with open(USERS_PATH) as users :
         return [line.strip() for line in users.readlines()]

@@ -36,16 +36,13 @@ class LoginHandler(BaseHandler):
         user = ','.join([name, psw])
         if user in userList:
             self.set_secure_cookie('username', name)
-            print 'set!\nredirect...'
             self.redirect('/')
-
 
 class IndexHandler(BaseHandler):
     '''docstring for IndexHandler'''
     @tornado.web.authenticated
     def get(self):
-        blog = files.getBlog()
-        self.render('index.html', blog=files.getBlog(), comments=files.getComments())
+        self.redirect('/'+self.get_current_user()+'/yubin/1')
 
     @tornado.web.authenticated
     def post(self):

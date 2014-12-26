@@ -1,108 +1,98 @@
-'use strict';
-window.onload = function(){
-    var area = document.getElementById('puzzlearea');
-    var pieces = puzzlearea.children;
-    var size = 4;
-    var shuffleBtn = document.getElementById('shufflebutton');
-    var blank = document.createElement('div');
-    var congratulation = document.createElement('div');
-    var addBlank = function(){
-        blank.classList.add('puzzlepiece');
-        blank.style.backgroundImage = 'url()';
-        // blank.style.top = Math.floor(pieces.length/size)*100+'px';
-        // blank.style.left = pieces.length%size*100+'px';
-        blank.style.visibility = 'hidden';
-        area.appendChild(blank);
+;
+$(function() {
+    var puzzleSize = 4;
+    var areaWidth = 400;
+    var puzzleImg = 'url("sao.jpg")';
+    var currentsteps = 0;
+    var starttime = null;
+    var stoptime = null;
+    var $area = $('#puzzlearea');
+    var $pieces = $area.children();
+    var $shuffleBtn = $('#shufflebutton');
+    var $imgSlt = $('<select name="image" id="imageselect"><option value="sao" selected="selected">sao</option><option value="alo">alo</option><option value="ggo">ggo</option><option value="uw">uw</option></select>');
+    var $blank = $('<div></div>');
+    var set = function(event) {
+        steps = 0;
+        puzzleImg = 'url(' + $imgSlt.val() + '.jpg)';
+        $blank.css({
+            'top': '300px',
+            'left': '300px'
+        });
+        $pieces.each(function(index, el) {
+            $(el).off('click', move).removeClass('movablepiece').addClass('puzzlepiece').css({
+                'top': Math.floor(index / puzzleSize) * (areaWidth / puzzleSize) + 'px',
+                'left': index % puzzleSize * (areaWidth / puzzleSize) + 'px',
+                'background-size': '400px 400px',
+                'background-image': puzzleImg,
+                'background-position': -index % puzzleSize * (areaWidth / puzzleSize) + 'px ' + -Math.floor(index / puzzleSize) * (areaWidth / puzzleSize) + 'px',
+                'user-select': 'none'
+            });
+        });
     }
-    var resetPosition = function(){
-        for (var index = 0; index < pieces.length; index++) {
-            pieces[index].classList.add('puzzlepiece');
-            pieces[index].style.top = Math.floor(index/size)*100+'px';
-            pieces[index].style.left = index%size*100+'px';
-        };
+    var isMovable = function(piece) {
+        return ($blank.css('top') === piece.css('top') && Math.abs(parseInt($blank.css('left')) - parseInt(piece.css('left'))) === (areaWidth / puzzleSize)) || ($blank.css('left') === piece.css('left') && Math.abs(parseInt($blank.css('top')) - parseInt(piece.css('top'))) === (areaWidth / puzzleSize));
     }
-    var changeBackground = function(){
-        for (var index = 0; index < pieces.length; index++) {
-            pieces[index].style.backgroundSize = '400px, 400px';
-            pieces[index].style.backgroundPositionX = -index%size*100+'px';
-            pieces[index].style.backgroundPositionY = -Math.floor(index/size)*100+'px';
-        };
-    }
-    var isMovable = function(piece){
-        return (blank.style.top == piece.style.top
-            && Math.abs(parseInt(blank.style.left)-parseInt(piece.style.left)) == 100)
-            || (blank.style.left == piece.style.left
-            && Math.abs(parseInt(blank.style.top)-parseInt(piece.style.top)) == 100);
-    }
-    var lightMovable = function(){
-        for (var index = 0; index < pieces.length; index++) {
-            pieces[index].removeEventListener('click', move);
-            if (isMovable(pieces[index])) {
-                pieces[index].classList.add('movablepiece');
-                pieces[index].addEventListener('click',move);
-            } else {
-                pieces[index].classList.remove('movablepiece');
-            }
-        };
-    }
-    var shuffle = function(event){
-        var random;
-        var count = 500;
-        var movableIndxs = [];
-        while (count) {
-            for (var index = 0; index < pieces.length; index++) {
-                if (isMovable(pieces[index])) {
-                    movableIndxs.push(index);
-                }  
-            }
-            random = movableIndxs[Math.round(Math.random(new Date()))*(movableIndxs.length-1)];
-            pieces[random].click();
-            movableIndxs = []
-            count--;
-        }
-    }
-    var isFinish = function(){
+    var isFinish = function() {
         var result = true;
-        for (var index = 0; index < pieces.length; index++) {
-            if (pieces[index].style.top !== Math.floor(index/size)*100+'px' ||
-            pieces[index].style.left !== index%size*100+'px') {
+        $pieces.each(function(index, el) {
+            if ($(el).css('top') !== Math.floor(index / puzzleSize) * (areaWidth / puzzleSize) + 'px' ||
+                $(el).css('left') !== index % puzzleSize * (areaWidth / puzzleSize) + 'px') {
                 result = false;
-                break;
-            }
-        }
+            };
+        });
         return result;
     }
-    var congratulate = function(){
-        congratulation.classList.add('puzzlepiece');
-        congratulation.style.zIndex = '999';
-        congratulation.style.top = '0px';
-        congratulation.style.left = '0px';
-        congratulation.style.width = '400px';
-        congratulation.style.height = '400px';
-        congratulation.style.backgroundPosition = '0px, 0px';
-        congratulation.style.backgroundImage = 'url("congratulation.jpg")';
-        area.appendChild(congratulation);
-        setTimeout(function(){
-            area.removeChild(congratulation);
+    var lightMovable = function() {
+        $pieces.each(function(index, el) {
+            $(el).off('click', move).removeClass('movablepiece');
+            if (isMovable($(el))) {
+                $(el).on('click', move).addClass('movablepiece');
+            }
+        });
+    }
+    var congratulate = function() {
+        $pieces.css('display', 'none');
+        $area.css('background-image', 'url(congratulation.jpg)');
+        alert('Your steps: ' + steps + '\nYour time: ' + (stoptime - starttime || stoptime) / 1000 + 's');
+        setTimeout(function() {
+            steps = 0;
+            $area.css('background-image', '');
+            $pieces.css('display', 'block').off('click', move).removeClass('movablepiece');
         }, 1000)
     }
-    var move = function(event){
-        var piece = event.target;
-        var tmptop = blank.style.top;
-        blank.style.top = piece.style.top;
-        piece.style.top= tmptop;        
-        var tmpleft = blank.style.left;
-        blank.style.left = piece.style.left;
-        piece.style.left= tmpleft;
-        lightMovable();
-        if (event.x && isFinish()) {
-            congratulate();
+    var move = function(event) {
+        var $piece = $(event.target);
+        var tmpcss = {
+            'top': $blank.css('top'),
+            'left': $blank.css('left')
+        };
+        $blank.css({
+            'top': $piece.css('top'),
+            'left': $piece.css('left')
+        });
+        if (event.clientX) {
+            steps++;
+            $piece.animate(tmpcss, 100, function() {
+                lightMovable();
+                if (isFinish()) {
+                    stoptime = new Date();
+                    congratulate();
+                }
+            });
+        } else {
+            $piece.css(tmpcss);
+            lightMovable();
         };
     }
-    shuffleBtn.addEventListener('click', shuffle);
-    addBlank();
-    resetPosition();
-    changeBackground();
-    lightMovable();
-    // shufflebutton.click();
-}
+    var shuffle = function(event) {
+        lightMovable();
+        starttime = new Date();
+        var count = 201; // count must be odd io prevent finishing
+        while (count--) {
+            $('.movablepiece').get(Math.round(Math.random() * ($('.movablepiece').length - 1))).click();
+        }
+    }
+    $shuffleBtn.on('click', shuffle);
+    $imgSlt.on('change', set).appendTo('#controls');
+    set();
+});
